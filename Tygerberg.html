@@ -32,10 +32,12 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet-measure.js"></script>
+        <script src="data/BiodiversityNetwork_2.js"></script>
+        <script src="data/Contours5m_3.js"></script>
         <script>
         var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:13
-        }).fitBounds([[-33.8929088471719,18.526686023943498],[-33.82753433429982,18.648388095810006]]);
+            zoomControl:true, maxZoom:28, minZoom:14
+        })
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -53,22 +55,346 @@
         .className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
         }
-        map.createPane('pane_OpenStreetMapmonochrome_0');
-        map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 400;
-        var layer_OpenStreetMapmonochrome_0 = L.tileLayer('http://a.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-            pane: 'pane_OpenStreetMapmonochrome_0',
+        map.createPane('pane_ESRISatellite_0');
+        map.getPane('pane_ESRISatellite_0').style.zIndex = 400;
+        var layer_ESRISatellite_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRISatellite_0',
             opacity: 1.0,
             attribution: '',
-            minZoom: 13,
+            minZoom: 14,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRISatellite_0;
+        map.addLayer(layer_ESRISatellite_0);
+        map.createPane('pane_OpenStreetMapmonochrome_1');
+        map.getPane('pane_OpenStreetMapmonochrome_1').style.zIndex = 401;
+        var layer_OpenStreetMapmonochrome_1 = L.tileLayer('http://a.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMapmonochrome_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 14,
             maxZoom: 28,
             minNativeZoom: 0,
             maxNativeZoom: 18
         });
-        layer_OpenStreetMapmonochrome_0;
-        map.addLayer(layer_OpenStreetMapmonochrome_0);
+        layer_OpenStreetMapmonochrome_1;
+        map.addLayer(layer_OpenStreetMapmonochrome_1);
+        function pop_BiodiversityNetwork_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>CBA_Catego</strong><br />' + (feature.properties['CBA_Catego'] !== null ? autolinker.link(feature.properties['CBA_Catego'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CBA_Name_</th>\
+                        <td>' + (feature.properties['CBA_Name_'] !== null ? autolinker.link(feature.properties['CBA_Name_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Subtype</th>\
+                        <td>' + (feature.properties['Subtype'] !== null ? autolinker.link(feature.properties['Subtype'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SDF</th>\
+                        <td>' + (feature.properties['SDF'] !== null ? autolinker.link(feature.properties['SDF'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Descriptio</th>\
+                        <td>' + (feature.properties['Descriptio'] !== null ? autolinker.link(feature.properties['Descriptio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Significan</th>\
+                        <td>' + (feature.properties['Significan'] !== null ? autolinker.link(feature.properties['Significan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Objective</th>\
+                        <td>' + (feature.properties['Objective'] !== null ? autolinker.link(feature.properties['Objective'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ACTION</th>\
+                        <td>' + (feature.properties['ACTION'] !== null ? autolinker.link(feature.properties['ACTION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Compat_Act</th>\
+                        <td>' + (feature.properties['Compat_Act'] !== null ? autolinker.link(feature.properties['Compat_Act'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Grndtruth</th>\
+                        <td>' + (feature.properties['Grndtruth'] !== null ? autolinker.link(feature.properties['Grndtruth'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CESA_Signi</th>\
+                        <td>' + (feature.properties['CESA_Signi'] !== null ? autolinker.link(feature.properties['CESA_Signi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PA_Name</th>\
+                        <td>' + (feature.properties['PA_Name'] !== null ? autolinker.link(feature.properties['PA_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Proclaimed</th>\
+                        <td>' + (feature.properties['Proclaimed'] !== null ? autolinker.link(feature.properties['Proclaimed'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Managed</th>\
+                        <td>' + (feature.properties['Managed'] !== null ? autolinker.link(feature.properties['Managed'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Primary_Cl</th>\
+                        <td>' + (feature.properties['Primary_Cl'] !== null ? autolinker.link(feature.properties['Primary_Cl'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Secondary_</th>\
+                        <td>' + (feature.properties['Secondary_'] !== null ? autolinker.link(feature.properties['Secondary_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tertiary_</th>\
+                        <td>' + (feature.properties['Tertiary_'] !== null ? autolinker.link(feature.properties['Tertiary_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Legislatio</th>\
+                        <td>' + (feature.properties['Legislatio'] !== null ? autolinker.link(feature.properties['Legislatio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CORR_NAME</th>\
+                        <td>' + (feature.properties['CORR_NAME'] !== null ? autolinker.link(feature.properties['CORR_NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BiodiversityNetwork_2_0(feature) {
+            switch(String(feature.properties['CBA_Catego'])) {
+                default:
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(71,223,84,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CBA 1a':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,76,172,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CBA 1b':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,109,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CBA 1d':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(36,145,32,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CBA 1e':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,112,146,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CBA 2':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(159,125,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Conservation Area':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(105,209,15,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'OESA':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,57,136,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Other Natural Areas':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(171,89,148,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Protected: In Perpetuity':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(175,105,199,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Protected: Not In Perpetuity':
+                    return {
+                pane: 'pane_BiodiversityNetwork_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(53,154,147,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_BiodiversityNetwork_2');
+        map.getPane('pane_BiodiversityNetwork_2').style.zIndex = 402;
+        map.getPane('pane_BiodiversityNetwork_2').style['mix-blend-mode'] = 'normal';
+        var layer_BiodiversityNetwork_2 = new L.geoJson(json_BiodiversityNetwork_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BiodiversityNetwork_2',
+            layerName: 'layer_BiodiversityNetwork_2',
+            pane: 'pane_BiodiversityNetwork_2',
+            onEachFeature: pop_BiodiversityNetwork_2,
+            style: style_BiodiversityNetwork_2_0,
+        });
+        bounds_group.addLayer(layer_BiodiversityNetwork_2);
+        map.addLayer(layer_BiodiversityNetwork_2);
+        function pop_Contours5m_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SL_CNTR__1'] !== null ? autolinker.link(feature.properties['SL_CNTR__1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Contours5m_3_0() {
+            return {
+                pane: 'pane_Contours5m_3',
+                opacity: 1,
+                color: 'rgba(232,113,141,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Contours5m_3');
+        map.getPane('pane_Contours5m_3').style.zIndex = 403;
+        map.getPane('pane_Contours5m_3').style['mix-blend-mode'] = 'normal';
+        var layer_Contours5m_3 = new L.geoJson(json_Contours5m_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Contours5m_3',
+            layerName: 'layer_Contours5m_3',
+            pane: 'pane_Contours5m_3',
+            onEachFeature: pop_Contours5m_3,
+            style: style_Contours5m_3_0,
+        });
+        bounds_group.addLayer(layer_Contours5m_3);
+        map.addLayer(layer_Contours5m_3);
         var baseMaps = {};
-        L.control.layers(baseMaps,{"OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/Contours5m_3.png" /> Contours 5m': layer_Contours5m_3,'Biodiversity Network<br /><table><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_CBA1a1.png" /></td><td>CBA 1a</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_CBA1b2.png" /></td><td>CBA 1b</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_CBA1d3.png" /></td><td>CBA 1d</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_CBA1e4.png" /></td><td>CBA 1e</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_CBA25.png" /></td><td>CBA 2</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_ConservationArea6.png" /></td><td>Conservation Area</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_OESA7.png" /></td><td>OESA</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_OtherNaturalAreas8.png" /></td><td>Other Natural Areas</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_ProtectedInPerpetuity9.png" /></td><td>Protected: In Perpetuity</td></tr><tr><td style="text-align: center;"><img src="legend/BiodiversityNetwork_2_ProtectedNotInPerpetuity10.png" /></td><td>Protected: Not In Perpetuity</td></tr></table>': layer_BiodiversityNetwork_2,"OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_1,"ESRI Satellite": layer_ESRISatellite_0,},{collapsed:false}).addTo(map);
         setBounds();
         </script>
     </body>
